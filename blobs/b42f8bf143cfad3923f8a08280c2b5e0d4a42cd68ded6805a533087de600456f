@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>random · pengenalan Next.js</title>
+    <!-- Google Font & simple reset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b0f1c 0%, #141b2b 100%);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: #eef3ff;
+            line-height: 1.5;
+        }
+
+        .card {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(20, 28, 45, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(88, 142, 255, 0.25);
+            border-radius: 2.5rem;
+            padding: 2.5rem 2.2rem;
+            box-shadow: 0 30px 45px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(120, 160, 255, 0.1) inset;
+            transition: all 0.2s ease;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(45, 120, 255, 0.18);
+            border: 1px solid rgba(90, 160, 255, 0.45);
+            border-radius: 100px;
+            padding: 0.35rem 1rem 0.35rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            color: #b7d0ff;
+            margin-bottom: 1.8rem;
+            width: fit-content;
+        }
+
+        .badge span {
+            font-size: 1rem;
+            filter: drop-shadow(0 0 6px #3f8cff);
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 650;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #c2d6ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.3rem 0.75rem;
+        }
+
+        h1 .next-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+            font-size: 1.2rem;
+            background: #0d1424;
+            padding: 0.25rem 0.9rem 0.25rem 0.7rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d6e5ff;
+            -webkit-text-fill-color: #d6e5ff;
+            background-clip: unset;
+        }
+
+        .next-logo svg {
+            width: 1.2rem;
+            height: 1.2rem;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 5px #5f9aff);
+        }
+
+        .pengenalan-text {
+            font-size: 1.1rem;
+            color: #a7bbdd;
+            margin-bottom: 2.3rem;
+            border-left: 3px solid #2f6eff;
+            padding-left: 1.2rem;
+            background: linear-gradient(90deg, rgba(47, 110, 255, 0.08) 0%, transparent 90%);
+            border-radius: 0 12px 12px 0;
+        }
+
+        .random-box {
+            background: rgba(8, 16, 30, 0.65);
+            border-radius: 2rem;
+            padding: 1.8rem 1.8rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(80, 140, 255, 0.25);
+            box-shadow: 0 10px 25px -10px #00000080;
+            transition: all 0.15s ease;
+        }
+
+        .random-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #6f8dc0;
+            font-weight: 500;
+        }
+
+        .random-header .reroll {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.35rem 1rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.15s;
+            color: #b5cdff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0.01em;
+            user-select: none;
+        }
+
+        .random-header .reroll:hover {
+            background: rgba(70, 130, 255, 0.25);
+            border-color: #3f7eff;
+            color: white;
+            transform: scale(0.97);
+        }
+
+        .random-header .reroll:active {
+            transform: scale(0.93);
+        }
+
+        .random-content {
+            font-size: 1.45rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            color: #eaf1ff;
+            min-height: 3.6rem;
+            word-break: break-word;
+            transition: opacity 0.15s;
+        }
+
+        .random-content small {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #8ea4cc;
+            margin-top: 0.5rem;
+            letter-spacing: 0.01em;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 0.7rem;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(45, 110, 255, 0.15);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #b6d0ff;
+            border: 1px solid rgba(90, 150, 255, 0.3);
+            transition: 0.1s;
+            cursor: default;
+            letter-spacing: 0.01em;
+        }
+
+        .tag:hover {
+            background: rgba(70, 140, 255, 0.3);
+            border-color: #4a8aff;
+            color: white;
+        }
+
+        .footer-note {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #5a6f92;
+            margin-top: 0.8rem;
+            gap: 0.8rem;
+        }
+
+        .footer-note a {
+            color: #88aaff;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #3e6dbb;
+        }
+
+        .footer-note a:hover {
+            color: #b7d2ff;
+            border-bottom-color: #7fa9ff;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #3b82f6;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.6; transform: scale(1); }
+        }
+
+        .flex-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 500px) {
+            .card { padding: 1.8rem 1.2rem; border-radius: 1.8rem; }
+            h1 { font-size: 1.8rem; }
+            .random-content { font-size: 1.2rem; }
+            .badge { font-size: 0.7rem; }
+            .random-box { padding: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- badge kecil -->
+        <div class="badge">
+            <span>⚡</span> random · pengenalan Next.js
+        </div>
+
+        <!-- Judul utama dengan sentuhan Next.js -->
+        <h1>
+            Kenalan sama
+            <span class="next-logo">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" fill="none" />
+                </svg>
+                Next.js
+            </span>
+        </h1>
+
+        <!-- deskripsi pengenalan singkat -->
+        <div class="pengenalan-text">
+            <strong>Next.js</strong> — framework React untuk production. 
+            Routing otomatis, SSR, SSG, API routes, dan optimasi gambar. 
+            Di bawah ini fakta acak tentang Next.js.
+        </div>
+
+        <!-- kotak random -->
+        <div class="random-box" id="randomBox">
+            <div class="random-header">
+                <span>📌 fakta acak</span>
+                <div class="reroll" id="rerollBtn" title="ganti fakta acak">
+                    <span>🔄</span> acak ulang
+                </div>
+            </div>
+            <div class="random-content" id="randomFact">
+                <!-- akan diisi oleh JavaScript -->
+            </div>
+            <div class="tag-list" id="tagList">
+                <!-- tag dinamis -->
+            </div>
+        </div>
+
+        <!-- footer kecil + info random -->
+        <div class="footer-note">
+            <div class="flex-row">
+                <span class="dot"></span>
+                <span>random pengenalan · <span id="randomSeedDisplay">seed</span></span>
+            </div>
+            <div>
+                <a href="#" id="newFactLink">↻ fakta baru</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Kumpulan fakta / pengenalan Next.js (random & bervariasi)
+            const nextFacts = [
+                {
+                    text: "Next.js adalah framework React untuk produksi yang dikembangkan oleh Vercel.",
+                    tags: ["Vercel", "React", "production-ready"]
+                },
+                {
+                    text: "Routing di Next.js berbasis file — cukup buat file di folder pages/ atau app/.",
+                    tags: ["file-based routing", "pages", "app router"]
+                },
+                {
+                    text: "Next.js support Server-Side Rendering (SSR) dan Static Site Generation (SSG).",
+                    tags: ["SSR", "SSG", "hybrid"]
+                },
+                {
+                    text: "API Routes memungkinkan kamu membuat endpoint backend di dalam project Next.js.",
+                    tags: ["API routes", "backend", "fullstack"]
+                },
+                {
+                    text: "Fitur Image Optimization otomatis mengurus ukuran & format gambar modern.",
+                    tags: ["next/image", "optimasi", "WebP"]
+                },
+                {
+                    text: "Next.js 13+ memperkenalkan App Router dengan React Server Components.",
+                    tags: ["App Router", "RSC", "Next 13"]
+                },
+                {
+                    text: "Fast Refresh: perubahan kode langsung terlihat tanpa kehilangan state.",
+                    tags: ["DX", "hot reload", "dev experience"]
+                },
+                {
+                    text: "Bisa deploy ke Vercel dengan sekali klik, atau ke Node.js server sendiri.",
+                    tags: ["deployment", "Vercel", "Node.js"]
+                },
+                {
+                    text: "Middleware Next.js memungkinkan kamu menjalankan kode sebelum request selesai.",
+                    tags: ["middleware", "edge", "request"]
+                },
+                {
+                    text: "Next.js memiliki dukungan TypeScript bawaan — tinggal aktifkan.",
+                    tags: ["TypeScript", "zero config", "types"]
+                },
+                {
+                    text: "Automatic code splitting: setiap halaman hanya memuat JavaScript yang diperlukan.",
+                    tags: ["code splitting", "performance", "bundle"]
+                },
+                {
+                    text: "next/link dan next/router membuat navigasi antar halaman super cepat.",
+                    tags: ["client-side", "routing", "prefetch"]
+                },
+                {
+                    text: "Bisa digunakan untuk static export (next export) menjadi HTML statis.",
+                    tags: ["static export", "SSG", "hosting"]
+                },
+                {
+                    text: "Next.js Auth, database, dan banyak integrasi lain tersedia lewat ekosistem.",
+                    tags: ["ekosistem", "integrasi", "plugin"]
+                },
+                {
+                    text: "Dengan ISR (Incremental Static Regeneration), halaman statis bisa diupdate di background.",
+                    tags: ["ISR", "revalidate", "static"]
+                },
+                {
+                    text: "Vercel (pembuat Next.js) menyediakan analytics & edge functions yang mulus.",
+                    tags: ["Vercel", "edge", "analytics"]
+                }
+            ];
+
+            // Fungsi untuk memilih indeks acak dengan seed (biar bisa ditampilkan)
+            function getRandomIndex(length, seed = null) {
+                if (seed === null) {
+                    seed = Math.floor(Math.random() * 1000000);
+                }
+                // Menggunakan seed sederhana untuk reproducibility (tapi tetap terlihat acak)
+                const x = Math.sin(seed) * 10000;
+                const rand = x - Math.floor(x);
+                return {
+                    index: Math.floor(rand * length),
+                    usedSeed: seed
+                };
+            }
+
+            // DOM elements
+            const randomFactEl = document.getElementById('randomFact');
+            const tagListEl = document.getElementById('tagList');
+            const rerollBtn = document.getElementById('rerollBtn');
+            const newFactLink = document.getElementById('newFactLink');
+            const seedDisplay = document.getElementById('randomSeedDisplay');
+
+            // Fungsi utama: render fakta acak berdasarkan seed (opsional)
+            function renderRandomFact(seed = null) {
+                // Dapatkan index acak + seed yang dipakai
+                const { index, usedSeed } = getRandomIndex(nextFacts.length, seed);
+                const fact = nextFacts[index];
+
+                // Update konten fakta
+                randomFactEl.innerHTML = `
+                    ${fact.text}
+                    <small>— fakta #${index + 1} dari ${nextFacts.length}</small>
+                `;
+
+                // Update tags
+                tagListEl.innerHTML = fact.tags.map(tag => 
+                    `<span class="tag">#${tag}</span>`
+                ).join('');
+
+                // Tampilkan seed (biar terasa "random")
+                if (seedDisplay) {
+                    seedDisplay.textContent = usedSeed;
+                }
+
+                // Tambahkan efek transisi halus
+                randomFactEl.style.opacity = '0.7';
+                setTimeout(() => { randomFactEl.style.opacity = '1'; }, 80);
+            }
+
+            // Generate seed awal (acak) dan render
+            function generateAndRender() {
+                const newSeed = Math.floor(Math.random() * 9999999);
+                renderRandomFact(newSeed);
+            }
+
+            // Fungsi ketika user klik "acak ulang" atau link — selalu pakai seed baru
+            function rerollWithNewSeed(e) {
+                if (e) e.preventDefault();
+                // Seed baru benar-benar acak
+                const freshSeed = Math.floor(Math.random() * 9999999);
+                renderRandomFact(freshSeed);
+            }
+
+            // Event listeners
+            rerollBtn.addEventListener('click', rerollWithNewSeed);
+            newFactLink.addEventListener('click', rerollWithNewSeed);
+
+            // Inisialisasi pertama kali: pakai seed acak
+            (function init() {
+                const initialSeed = Math.floor(Math.random() * 1000000);
+                renderRandomFact(initialSeed);
+            })();
+
+            // bonus: klik pada kotak random (selain tombol) juga bisa reroll? optional, tapi kita batasi ke tombol aja biar ga ganggu.
+            // Tambahkan juga: di mobile, kadang user tekan area kosong; kita ikutkan tombol reroll saja.
+
+            // tambahan kecil: ganti seed ketika halaman di refresh? sudah otomatis karena init pakai random.
+        })();
+    </script>
+</body>
+</html>
